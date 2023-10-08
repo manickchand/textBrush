@@ -33,10 +33,10 @@
     <com.manickchand.textbrush.DrawingImageView
         android:id="@+id/image_edit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/margin_default"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_default"
         android:adjustViewBounds="true"
-        tools:src="@drawable/img_island"
+        tools:src="@drawable/img_to_draw"
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@id/footer"
         app:layout_constraintTop_toBottomOf="@id/header" />
@@ -79,6 +79,26 @@
             android:src="@drawable/ic_insert_photo_24_white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/delete_button" />
+
+        <ImageButton
+            android:id="@+id/font_up_button"
+            style="@style/PrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:src="@drawable/ic_text_increase_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/font_down_button" />
+
+        <ImageButton
+            android:id="@+id/font_down_button"
+            style="@style/PrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_default"
+            android:src="@drawable/ic_text_decrease_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
