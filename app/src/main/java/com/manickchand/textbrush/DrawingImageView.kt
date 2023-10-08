@@ -7,7 +7,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -16,7 +15,6 @@ import android.widget.ImageView
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toBitmapOrNull
 import kotlin.math.roundToInt
-
 
 class DrawingImageView @JvmOverloads constructor(
     context: Context,
@@ -41,8 +39,6 @@ class DrawingImageView @JvmOverloads constructor(
 
     private var currentOriginalBitmap: Bitmap? = null
 
-    var fontSize = 30
-
     fun builder() {
         linePath.reset()
         val configBitmap = currentOriginalBitmap?.config ?: Bitmap.Config.ARGB_8888
@@ -54,7 +50,6 @@ class DrawingImageView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        //canvas?.rotate(-90f)
 
         canvas?.let {
             textCanvas = it
@@ -88,7 +83,7 @@ class DrawingImageView @JvmOverloads constructor(
                     undoList.add(it)
                 }
 
-                draw(x, y)
+                drawText()
             }
         }
         invalidate()
@@ -104,14 +99,8 @@ class DrawingImageView @JvmOverloads constructor(
         }
     }
 
-    private fun draw(
-        x: Float,
-        y: Float,
-    ) {
+    private fun drawText() {
         linePath.reset()
-
-        val rect = Rect()
-        textCanvas.getClipBounds(rect)
 
         val bitmap =
             drawable.toBitmap().copy(currentOriginalBitmap!!.config, true)
@@ -129,19 +118,19 @@ class DrawingImageView @JvmOverloads constructor(
         var interval = positionsMap.size / quantityChar
         if (interval < 1) interval = 1
         if (positionsMap.size < quantityChar) {
-
+            textCanvas.drawText(textToDraw, startX, startY, paint)
         } else {
 
-            val arr = ArrayList<Pair<Float, Float>>()
-            val list = positionsMap.chunked(interval)
+            val finalPoints = ArrayList<Pair<Float, Float>>()
+            val listChunked = positionsMap.chunked(interval)
 
-            list.forEach {
-                Log.d("text", "arr $it")
-                arr.add(it.first())
+            listChunked.forEach {
+                Log.d("text", "point $it")
+                finalPoints.add(it.first())
             }
 
             textToDraw.forEachIndexed { index, c ->
-                val p = arr.getOrNull(index) ?: arr.first()
+                val p = finalPoints.getOrNull(index) ?: finalPoints.first()
                 textCanvas.drawText(c.toString(), p.first, p.second, paint)
             }
         }
